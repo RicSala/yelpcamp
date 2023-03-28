@@ -1,0 +1,59 @@
+<% layout('/layouts/boilerplate') %>
+    <div id="map" style="width: 100%; height: 500px;"></div>
+
+    <h1>All Campgrounds</h1>
+
+    <% for (let campground of campgrounds) {%>
+
+        <div class="card" mb-3>
+            <div class="row">
+
+                <!-- if campground has image then   -->
+                <div class="col-md-4">
+                    <% if (campground.images.length> 0) { %>
+                        <img class="img-fluid" alt="" src="<%= campground.images[0].url %>">
+                        <% } else { %>
+                            <img class="img-fluid" alt=""
+                                src="https://res.cloudinary.com/dwr2im3wk/image/upload/v1679659328/Yelpcamp/pewbvx90mtbly5p9sayi.jpg">
+                            <% } %>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <%= campground.title %>
+                        </h5>
+                        <p class="card-tex">
+                            <%= campground.description %>
+                        </p>
+                        <p class="text-muted">
+                            <%= campground.location %>
+                        </p>
+                        <a class="btn btn-primary" href="/campgrounds/<%= campground.id  %>">View <%= campground.title
+                                %>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <% } %>
+
+            <script>
+                const mapboxToken='<%- process.env.MAPBOX_TOKEN %>'
+
+                // constant with stringify version of campgrounds
+                const campgrounds={ features: <%- JSON.stringify(campgrounds)%> }
+                // given an array of campgrounds, add a new property to each campground called properties
+                // campgrounds.features.map(campground => {
+                //     campground.properties={
+                //         title: `${campground.title}`,
+                //         location: `${campground.location}`,
+                //         link: `${campground.link}`
+                //     }
+                //     return campground
+                // })
+
+            </script>
+            <script src="/javascripts/clusterMap.js"></script>
