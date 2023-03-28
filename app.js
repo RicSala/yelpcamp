@@ -24,9 +24,9 @@ import reviewRoutes from "./routes/reviews.js"
 import userRoutes from "./routes/users.js";
 
 const dbUrl=process.env.DB_URL||'mongodb://localhost:27017/yelp-camp';
+const secret=process.env.SECRET||'thisshouldbeabettersecret';
 
-
-mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp') // TODO: Why is he using options here?
+mongoose.connect(dbUrl) // TODO: Why is he using options here?
     .then(() => console.log("Connected to MongoDB"))
     .catch(e => console.log("ERROR connecting MongoDB: ", e))
 
@@ -45,8 +45,8 @@ app.use(flash())
 
 
 const storeOptions={
-    mongoUrl: 'mongodb://127.0.0.1:27017/yelp-camp',
-    secret: 'thisshouldbeabettersecret',
+    mongoUrl: dbUrl,
+    secret: secret,
     touchAfter: 24*60*60, // if the data is not changed, it will not be updated in the database (24 hours)
 }
 
@@ -60,7 +60,7 @@ store.on("error", function (e) {
 const sessionConfig={
     store,
     name: 'session', // hide a little bit the fact that we are using a session
-    secret: 'thisshouldbeabettersecret',
+    secret: secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
